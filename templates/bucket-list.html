@@ -4,7 +4,29 @@
    <button class="button button-clear" ng-click="logout()">Logout</button>
 </ion-header-bar>
 <ion-content class="has-header padding" has-tabs="true" on-refresh="onRefresh()">
-  
-   <button class="button button-positive" ng-click="assignPass()">Assign Pass</button>
-   <button class="button button-positive" ng-click="requestPass()">Request Pass</button>
+	<ion-refresher ng-hide="noData" on-refresh="doRefresh('1')"></ion-refresher>
+	<div id="buttonId">
+	   <button class="button button-positive" id="buttonId1" ng-click="assignPass()">Assign Pass</button>
+	   <button class="button button-positive" id="buttonId2" ng-click="requestPass()">Request Pass</button> 
+   </div>
+    
+   <div class="card" ng-repeat="item in list" >
+      <div class="item item-text-wrap">
+         <span>
+         grant pass for {{item.guestId}} to visit on {{ item.item }} 
+         </span>
+         <br/>  <br/>
+         <p class="actions padding">
+            <i class="ion-checkmark-circled icon-actions margin" ng-click=""></i>
+            <i class="ion-trash-b icon-actions margin" ng-click=""></i>
+         </p>
+      </div>
+   </div>
+   <div class="card" >
+      <div class="item item-text-wrap" ng-show="noData">
+         <span>
+         Welcome, edit your profile by clicking at top left nav
+         </span>
+      </div>
+   </div>
 </ion-content>

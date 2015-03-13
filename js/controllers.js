@@ -87,7 +87,7 @@ angular.module('bucketList.controllers', [])
         $scope.list = [];
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                if (data[key].isCompleted == false) {
+                if (data[key].isArchived == false) {
                     data[key].key = key;
                     $scope.list.push(data[key]);
                 }
@@ -115,10 +115,14 @@ angular.module('bucketList.controllers', [])
     };
 
     $scope.markCompleted = function(key) {
-        $rootScope.show("Please wait... Updating List");
+        $rootScope.show("Request Accepted !");
         var itemRef = new Firebase($rootScope.baseUrl + escapeEmailAddress($rootScope.userEmail) + '/' + key);
+        console.log(itemRef);
         itemRef.update({
-            isCompleted: true
+            // console.log("in");
+            // item: 'change'
+            isArchived:true
+
         }, function(error) {
             if (error) {
                 $rootScope.hide();
@@ -131,15 +135,17 @@ angular.module('bucketList.controllers', [])
     };
 
     $scope.deleteItem = function(key) {
-        $rootScope.show("Please wait... Deleting from List");
+        $rootScope.show("Denied request, storing in archives! ");
         var itemRef = new Firebase($rootScope.baseUrl + escapeEmailAddress($rootScope.userEmail));
-        bucketListRef.child(key).remove(function(error) {
+        itemRef.update({
+            isArchived:true
+        }, function(error) {
             if (error) {
                 $rootScope.hide();
                 $rootScope.notify('Oops! something went wrong. Try again later');
             } else {
                 $rootScope.hide();
-                $rootScope.notify('Successfully deleted');
+                $rootScope.notify('Successfully updated');
             }
         });
     };
@@ -170,7 +176,11 @@ angular.module('bucketList.controllers', [])
 
         var form = {
             item: date,
-            isCompleted: false,
+            isArchived: false,
+            isActive: true,
+            guestId: 'tejeshpapineni95@gmail.com',
+
+
             created: Date.now(),
             updated: Date.now()
         };
@@ -193,7 +203,7 @@ angular.module('bucketList.controllers', [])
 
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                if (data[key].isCompleted == true) {
+                if (data[key].isArchived == true) {
                     data[key].key = key;
                     $scope.list.push(data[key]);
                 }
@@ -238,7 +248,32 @@ angular.module('bucketList.controllers', [])
     
     };
     }
-]);
+])
+
+.controller("contactCtrl", ['$scope', 'ContactsService', function($scope, ContactsService) {
+
+        $scope.data = {
+            selectedContacts : []
+        };
+
+        $scope.pickContact = function() {
+
+            ContactsService.pickContact().then(
+                function(contact) {
+                    $scope.data.selectedContacts.push(contact);
+                    console.log("Selected contacts=");
+                    console.log($scope.data.selectedContacts);
+
+                },
+                function(failure) {
+                    console.log("Bummer.  Failed to pick a contact");
+                }
+            );
+
+        }
+
+
+    }])
 
 function escapeEmailAddress(email) {
     if (!email) return false

@@ -5,7 +5,36 @@
       <button class="button button-positive" ng-click="createNew()">Done</button>
    </header>
    <ion-content class="padding has-header">
-      <input type="date"  ng-model="data.date">
-      <input type="time" ng-model="data.time">
+   <div class="card">
+  <div class="item item-text-wrap">
+  	Enter date
+    <input type="date"  ng-model="data.date">
+    Enter time
+    <input type="time" ng-model="data.time">
+  </div>
+    
+        <button class="button" ng-click="pickContact()">Contacts</button>
+        <h1 class="title">Pick Contacts</h1>
+    
+    <ion-content>
+        <div class="list">
+
+            <a class="item item-thumbnail-left" ng-repeat="contact in data.selectedContacts">
+                <img src="{{contact.photos[0].value}}" ng-if="contact.photos.length > 0">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Silver_-_replace_this_image_male.svg/200px-Silver_-_replace_this_image_male.svg.png" ng-if="contact.photos.length === 0">
+                <h2>{{contact.displayName}}</h2>
+                <h2>yoo</h2>
+                <p ng-if="contact.emails.length > 0">{{contact.emails[0].type}} : {{contact.emails[0].value}}</p>
+                <p ng-if="contact.phones.length > 0">{{contact.phones[0].type}} : {{contact.phones[0].value}}</p>
+            </a>
+
+        </div>
+       
+    </ion-content>
+
+  <div>
+    
+</div>
+      
    </ion-content>
 </div>
